@@ -26,16 +26,13 @@ def right_endings(word_param):
 
 
 def start(update, context):
-    global current_state
     send_message = lambda message: context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-    if current_state[0] == START:
-        send_message('Для поиска по тексту отправь сообщение, состоящий из латинских букв в нижнем регистре, '
-                     'пробела, запятой и точки длиной не более ' + str(library['page_len']) + ' символов.')
-        send_message('Для поиска по адресу страницы отправь сообщение в формате '
-                     '{адрес комнаты}-{стена}-{полка}-{том}-{страница}')
-        send_message('В случае неправильного формата сообщение будет отчищено от лишних '
-                     'симоволов и переведено в нижний регистр.')
-        current_state[0] = WAITING_TEXT
+    send_message('Для поиска по тексту отправь сообщение, состоящий из латинских букв в нижнем регистре, '
+                    'пробела, запятой и точки длиной не более ' + str(library['page_len']) + ' символов.')
+    send_message('Для поиска по адресу страницы отправь сообщение в формате '
+                    '{адрес комнаты}-{стена}-{полка}-{том}-{страница}')
+    send_message('В случае неправильного формата сообщение будет отчищено от лишних '
+                    'симоволов и переведено в нижний регистр.')
 
 
 def help(update, context):
@@ -57,28 +54,26 @@ def params(update, context):
 
 
 def get_text_from_chat(update, context):
-    global current_state
     send_message = lambda message: context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-    if current_state[0] == WAITING_TEXT:
-        send_message('Ищем в чертогах библиотеки...')
-        text = update.message.text.lower()
-        if '-' in text:
-            address = text
-            if not check_address(address):
-                send_message('Неверный формат адреса.')
-                return
-        else:
-            text = clear_text(text)
-            address = search_page(text)
-            send_message('Адрес:\n' + address)
+    send_message('Ищем в чертогах библиотеки...')
+    text = update.message.text.lower()
+    if '-' in text:
+        address = text
+        if not check_address(address):
+            send_message('Неверный формат адреса.')
+            return
+    else:
+        text = clear_text(text)
+        address = search_page(text)
+        send_message('Адрес:\n' + address)
 
-        title = get_title(address)
-        send_message('Название книги:\n' + title)
+    title = get_title(address)
+    send_message('Название книги:\n' + title)
 
-        message = 'Текст:\n'
-        message += get_page(address)
-        message = message.replace(text, '<b>' + text + '</b>')
-        context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode=ParseMode.HTML)
+    message = 'Текст:\n'
+    message += get_page(address)
+    message = message.replace(text, '<b>' + text + '</b>')
+    context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode=ParseMode.HTML)
 
 def main():
     updater = Updater(token=token)
@@ -101,5 +96,4 @@ def main():
     updater.idle()
 
 if __name__ == '__main__':
-    current_state = [START]
     main()
