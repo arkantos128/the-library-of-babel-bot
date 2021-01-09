@@ -70,11 +70,12 @@ def get_text(update, context):
         else:
             text = clear_text(text)
             address = search_page(text)
-            send_message('Адрес: ' + address)
+            send_message('Адрес:\n' + address)
 
         title = get_title(address)
-        send_message('Название книги: ' + title)
+        send_message('Название книги:\n' + title)
 
+        message = 'Текст:\n'
         message = get_page(address)
         message = message.replace(text, '<b>' + text + '</b>')
         context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode=ParseMode.HTML)
