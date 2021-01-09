@@ -5,7 +5,7 @@ START = 0
 WAITING_TEXT = 1
 
 token = '1535946117:AAE_XgVH6phVFCE9TagZqkWR54-o6UoUHso'
-port = int(os.environ.get('PORT', '8443'))
+port = int(os.environ.get('PORT', '5000'))
 app_name = 'the-library-of-babel-bot'
 
 lines_count = 25

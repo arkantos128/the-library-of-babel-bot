@@ -79,24 +79,26 @@ def get_text(update, context):
         message = message.replace(text, '<b>' + text + '</b>')
         context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode=ParseMode.HTML)
 
+def main():
+    updater = Updater(token=token)
+    dispatcher = updater.dispatcher
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        level=logging.INFO)
 
-current_state = [START]
-updater = Updater(token=token)
-dispatcher = updater.dispatcher
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+    handlers = [CommandHandler('start', start),
+                CommandHandler('params', params),
+                CommandHandler('help', help),
+                MessageHandler(Filters.text & (~Filters.command), get_text)]
 
-handlers = [CommandHandler('start', start),
-            CommandHandler('params', params),
-            CommandHandler('help', help),
-            MessageHandler(Filters.text & (~Filters.command), get_text)]
+    for handler in handlers:
+        dispatcher.add_handler(handler)
 
-for handler in handlers:
-    dispatcher.add_handler(handler)
+    updater.start_webhook(listen="0.0.0.0",
+                          port=port,
+                          url_path=token)
+    updater.bot.set_webhook('https://{0}.herokuapp.com/{1}'.format(app_name, token))
+    updater.idle()
 
-updater.start_webhook(listen="0.0.0.0",
-                      port=port,
-                      url_path=token)
-updater.bot.set_webhook('https://{0}.herokuapp.com/{1}'.format(app_name, token))
-updater.idle()
-
+if __name__ == '__main__':
+    current_state = [START]
+    main()
