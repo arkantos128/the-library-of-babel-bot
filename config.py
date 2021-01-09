@@ -1,7 +1,7 @@
 import string
 import os
 
-token = '1535946117:AAE_XgVH6phVFCE9TagZqkWR54-o6UoUHso'
+token = ''
 port = int(os.environ.get('PORT', '5000'))
 app_name = 'the-library-of-babel-bot'
 
