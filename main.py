@@ -56,7 +56,7 @@ def params(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=text)
 
 
-def get_text(update, context):
+def get_text_from_chat(update, context):
     global current_state
     send_message = lambda message: context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     if current_state[0] == WAITING_TEXT:
@@ -89,7 +89,7 @@ def main():
     handlers = [CommandHandler('start', start),
                 CommandHandler('params', params),
                 CommandHandler('help', help),
-                MessageHandler(Filters.text & (~Filters.command), get_text)]
+                MessageHandler(Filters.text & (~Filters.command), get_text_from_chat)]
 
     for handler in handlers:
         dispatcher.add_handler(handler)
