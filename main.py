@@ -76,7 +76,7 @@ def get_text(update, context):
         send_message('Название книги:\n' + title)
 
         message = 'Текст:\n'
-        message = get_page(address)
+        message += get_page(address)
         message = message.replace(text, '<b>' + text + '</b>')
         context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode=ParseMode.HTML)
 
