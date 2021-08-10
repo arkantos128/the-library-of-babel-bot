@@ -28,11 +28,11 @@ def right_endings(word_param):
 def start(update, context):
     send_message = lambda message: context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     send_message('Для поиска по тексту отправь сообщение, состоящий из латинских букв в нижнем регистре, '
-                    'пробела, запятой и точки длиной не более ' + str(library['page_len']) + ' символов.')
+                 'пробела, запятой и точки длиной не более ' + str(library['page_len']) + ' символов.')
     send_message('Для поиска по адресу страницы отправь сообщение в формате '
-                    '{адрес комнаты}-{стена}-{полка}-{том}-{страница}')
+                 '{адрес комнаты}-{стена}-{полка}-{том}-{страница}')
     send_message('В случае неправильного формата сообщение будет очищено от лишних '
-                    'символов и переведено в нижний регистр.')
+                 'символов и переведено в нижний регистр.')
 
 
 def help(update, context):
@@ -75,6 +75,7 @@ def get_text_from_chat(update, context):
     message = message.replace(text, '<b>' + text + '</b>')
     context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode=ParseMode.HTML)
 
+
 def main():
     updater = Updater(token=token)
     dispatcher = updater.dispatcher
@@ -89,11 +90,9 @@ def main():
     for handler in handlers:
         dispatcher.add_handler(handler)
 
-    updater.start_webhook(listen="0.0.0.0",
-                          port=port,
-                          url_path=token)
-    updater.bot.set_webhook('https://{0}.herokuapp.com/{1}'.format(app_name, token))
+    updater.start_polling()
     updater.idle()
+
 
 if __name__ == '__main__':
     main()

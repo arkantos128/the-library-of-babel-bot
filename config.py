@@ -1,9 +1,6 @@
 import string
-import os
 
 token = ''
-port = int(os.environ.get('PORT', '5000'))
-app_name = 'the-library-of-babel-bot'
 
 lines_count = 25
 line_len = 50
